@@ -109,12 +109,22 @@ func main() {
 	go sendRequest(ctx, "ViaCep", cep, ch, &wg)
 	go sendRequest(ctx, "BrasilApi", cep, ch, &wg)
 
+	// example using goroutine
 	// Wait for the first response and cancel the other requests
-	go func() {
-		response := <-ch
+	// go func() {
+	// 	response := <-ch
+	// 	fmt.Printf("The endpoint %s returned status code %d and the response is: %+v\n", response.Endpoint, response.Status, response.Data)
+	// 	cancel()
+	// }()
+
+	// example also using select
+	select {
+	case response := <-ch:
 		fmt.Printf("The endpoint %s returned status code %d and the response is: %+v\n", response.Endpoint, response.Status, response.Data)
 		cancel()
-	}()
+	case <-ctx.Done():
+		fmt.Println("Request canceled")
+	}
 
 	wg.Wait() // Wait for all requests to finish
 	close(ch)

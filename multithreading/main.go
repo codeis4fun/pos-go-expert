@@ -66,7 +66,10 @@ func sendRequest(ctx context.Context, endpoint string, cep string, ch chan<- Res
 
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Printf("Error sending request for endpoint %s: %v\n", endpoint, err)
+		// Do not print an error message if the context is canceled
+		if ctx.Err() != context.Canceled {
+			fmt.Printf("Error sending request for endpoint %s: %v\n", endpoint, err)
+		}
 		ch <- response
 		return
 	}

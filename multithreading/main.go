@@ -109,13 +109,13 @@ func main() {
 	go sendRequest(ctx, "ViaCep", cep, ch, &wg)
 	go sendRequest(ctx, "BrasilApi", cep, ch, &wg)
 
-	// Wait for the first response and cancel the other request
+	// Wait for the first response and cancel the other requests
 	go func() {
 		response := <-ch
 		fmt.Printf("The endpoint %s returned status code %d and the response is: %+v\n", response.Endpoint, response.Status, response.Data)
 		cancel()
 	}()
 
-	wg.Wait() // Wait for both requests to finish
+	wg.Wait() // Wait for all requests to finish
 	close(ch)
 }

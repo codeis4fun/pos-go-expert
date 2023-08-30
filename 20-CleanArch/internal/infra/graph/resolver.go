@@ -8,4 +8,5 @@ import "github.com/codeis4fun/pos-go-expert/20-CleanArch/internal/usecase"
 
 type Resolver struct {
 	CreateOrderUseCase usecase.CreateOrderUseCase
+	ListOrdersUseCase  usecase.ListOrdersUseCase
 }

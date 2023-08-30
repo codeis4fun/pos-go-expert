@@ -2,6 +2,8 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
+	"math/rand"
 	"testing"
 
 	"github.com/devfullcycle/20-CleanArch/internal/entity"
@@ -48,4 +50,24 @@ func (suite *OrderRepositoryTestSuite) TestGivenAnOrder_WhenSave_ThenShouldSaveO
 	suite.Equal(order.Price, orderResult.Price)
 	suite.Equal(order.Tax, orderResult.Tax)
 	suite.Equal(order.FinalPrice, orderResult.FinalPrice)
+}
+
+func (suite *OrderRepositoryTestSuite) TestShouldInsertedOrdersAndReturnAll() {
+	repo := NewOrderRepository(suite.Db)
+	numOrders := 10
+	minPrice := 10.0
+	maxPrice := 100.0
+	for i := 0; i < numOrders; i++ {
+		order, err := entity.NewOrder(fmt.Sprintf("%d", i), minPrice+rand.Float64()*(maxPrice-minPrice), minPrice+rand.Float64()*(maxPrice-minPrice))
+		suite.NoError(err)
+		suite.NoError(order.CalculateFinalPrice())
+		err = repo.Save(order)
+		suite.NoError(err)
+	}
+
+	listOrders, err := entity.NewListOrders(1, 10)
+	suite.NoError(err)
+	orders, err := repo.GetOrders(listOrders)
+	suite.NoError(err)
+	suite.Equal(10, len(orders))
 }

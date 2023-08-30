@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"github.com/devfullcycle/20-CleanArch/internal/entity"
+	"github.com/codeis4fun/pos-go-expert/20-CleanArch/internal/entity"
 )
 
 type ListOrdersInputDTO struct {

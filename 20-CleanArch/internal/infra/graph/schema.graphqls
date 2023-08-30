@@ -11,6 +11,15 @@ input OrderInput {
     Tax: Float!
 }
 
+input ListOrdersInput {
+    Page: Int!
+    Limit: Int!
+}
+
 type Mutation {
     createOrder(input: OrderInput): Order
+}
+
+type Query {
+    listOrders(input: ListOrdersInput): [Order]
 }

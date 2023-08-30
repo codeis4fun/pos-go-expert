@@ -15,6 +15,16 @@ message CreateOrderResponse {
   float final_price = 4;
 }
 
+message ListOrdersRequest {
+  int64 page = 1;
+  int64 limit = 2;
+}
+
+message ListOrdersResponse {
+  repeated CreateOrderResponse orders = 1;
+}
+
 service OrderService {
   rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
 }

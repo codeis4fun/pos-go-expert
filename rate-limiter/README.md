@@ -90,7 +90,7 @@ Arquivo de configuração do servidor HTTP.
 Arquivo de testes do servidor HTTP. Nele fazemos testes de integração para termos certeza de que o servidor está funcionando corretamente e respondendo com o erro 429 quando a quantidade de requisições exceder o limite configurado.
 
 #### pkg/cache/interface.go
-Interface para o cache.
+Interface para o cache. Para utilizar outro banco de dados como cache, basta criar um tipo que implemente os métodos `Set` e `Get`. Um exemplo que banco que pode substituir o Redis é o Memcached do Google Cloud.
 
 #### pkg/cache/redis.go
 Implementação do cache utilizando o Redis.

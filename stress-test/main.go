@@ -16,6 +16,8 @@ type stressReport map[int]*atomic.Uint64
 
 func newStressReport() *stressReport {
 	sr := make(stressReport)
+	// Add status code 200 to the report in case the stress report only returns other status codes
+	sr[http.StatusOK] = new(atomic.Uint64)
 	return &sr
 }
 
@@ -25,12 +27,6 @@ func (sr *stressReport) increment(code int) {
 	}
 
 	(*sr)[code].Add(1)
-}
-
-func (sr *stressReport) set(code int) {
-	if _, ok := (*sr)[code]; !ok {
-		(*sr)[code] = new(atomic.Uint64)
-	}
 }
 
 func (sr *stressReport) String() string {
@@ -80,7 +76,6 @@ func main() {
 	defer cancel()
 
 	report := newStressReport()
-	report.set(http.StatusOK)
 
 	loopCount := (requests + concurrency - 1) / concurrency // Calculate number of loops needed
 

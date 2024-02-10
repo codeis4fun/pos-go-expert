@@ -25,7 +25,7 @@ go run main.go -url=https://www.google.com -requests=100 -goroutines=10
 com docker
 ```bash
 docker build -t stress-test .
-docker run stress-test -url=https://www.google.com -requests=100 -goroutines=10
+docker run stress-test -- -url=https://www.google.com -requests=100 -goroutines=10
 ```
 
 ## Exemplo de report

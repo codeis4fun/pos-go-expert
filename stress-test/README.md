@@ -30,10 +30,12 @@ docker run stress-test -url=https://www.google.com -requests=100 -goroutines=10
 
 ## Exemplo de report
 ```bash
+go run . --url https://www.terra.com.br --requests 100000 --concurrency 100
 Report:
-All requests finished in 7.737614003s
-Total requests: 100
-Status code 200: 100
+All requests finished in 7m6.436223875s
+Total requests: 100000
+Status code 200: 5659
+Status code 403: 94341
 ```
 
 ## Autor

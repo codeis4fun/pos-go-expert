@@ -1,3 +1,4 @@
+# Desafio stress test CLI - Pós graduação GoExpert FullCycle
 ## Descrição
 Desenvolver uma ferramenta de stress test que funcione via CLI e retorne um report com os resultados.
 

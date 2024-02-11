@@ -16,6 +16,7 @@ Desenvolver uma ferramenta de stress test que funcione via CLI e retorne um repo
 - Time: Utilizado para calcular o tempo total de execução do programa.
 - Sync.WaitGroup: Utilizado para garantir que todas as go routines sejam finalizadas antes de retornar o report.
 - Sync.Atomic: Utilizado para garantir que as variáveis de contagem sejam acessadas de forma segura pelas go routines.
+- Math.Min: Utilizado para garantir que a quantidade de go routines não seja maior que a quantidade de requests.
 
 ## Como executar
 sem docker

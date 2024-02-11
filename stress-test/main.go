@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"math"
 	"net/http"
 	"sync"
 	"sync/atomic"
@@ -61,9 +62,10 @@ func makeRequest(ctx context.Context, wg *sync.WaitGroup, sr *stressReport, url 
 func main() {
 	var (
 		ctx                   context.Context
-		wg                    sync.WaitGroup
+		wg                    *sync.WaitGroup
 		url                   string
 		requests, concurrency int
+		totalRequests         *atomic.Uint64
 	)
 
 	flag.StringVar(&url, "url", "https://www.google.com.br", "URL to send requests to")
@@ -76,19 +78,24 @@ func main() {
 	defer cancel()
 
 	report := newStressReport()
-
-	loopCount := (requests + concurrency - 1) / concurrency // Calculate number of loops needed
+	wg = new(sync.WaitGroup)
+	totalRequests = new(atomic.Uint64)
 
 	now := time.Now()
-	for i := 1; i <= loopCount; i++ {
-		wg.Add(concurrency)
-		for j := 1; j <= concurrency; j++ {
-			go makeRequest(ctx, &wg, report, url)
+	for int(totalRequests.Load()) < requests {
+		remainingRequests := requests - int(totalRequests.Load())
+		numRequests := int(math.Min(float64(concurrency), float64(remainingRequests)))
+		wg.Add(numRequests)
+		for j := 1; j <= numRequests; j++ {
+			go func() {
+				makeRequest(ctx, wg, report, url)
+				totalRequests.Add(1) // Increment the total requests counter
+			}()
 		}
 		wg.Wait()
 	}
 	fmt.Println("Report:")
 	fmt.Println(fmt.Sprintf("All requests finished in %s", time.Since(now)))
-	fmt.Println(fmt.Sprintf("Total requests: %d", requests))
+	fmt.Println(fmt.Sprintf("Total requests: %d", totalRequests.Load()))
 	fmt.Println(report)
 }

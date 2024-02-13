@@ -40,7 +40,7 @@ WEATHER_API=YOUR_API_KEY
 **Atenção**: substitua YOUR_API_KEY pela sua chave de acesso à API do WeatherApi.
 
 ## Endpoints
-### GET /weather/:cep
+### GET /weather?cep=:cep
 Retorna a temperatura da localidade do CEP em celsius, fahrenheit e kelvin.
 
 #### Parâmetros
@@ -48,7 +48,7 @@ Retorna a temperatura da localidade do CEP em celsius, fahrenheit e kelvin.
 
 #### Exemplo de requisição
 ```bash
-curl -X GET "http://localhost:8080/weather/01311000"
+curl -X GET "http://localhost:8080/weather?cep=01311000"
 ```
 
 ## Exemplo de resposta

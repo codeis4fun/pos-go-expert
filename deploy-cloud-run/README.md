@@ -79,5 +79,8 @@ PASS
 ok      github.com/codeis4fun/pos-go-expert/deploy-cloud-run    1.856s
 ```
 
+## Endpoint para acesso no Cloud Run
+[https://deploy-cloud-run-jf6n7xsyeq-uc.a.run.app/weather?cep=01001000](https://deploy-cloud-run-jf6n7xsyeq-uc.a.run.app/weather?cep=01001000)
+
 ## Autor
 - [Nícholas Carballo](https://www.linkedin.com/in/nicholascarballo/)

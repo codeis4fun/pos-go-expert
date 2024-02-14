@@ -125,7 +125,7 @@ func main() {
 
 	http.HandleFunc("/weather", func(w http.ResponseWriter, r *http.Request) {
 		cep := r.URL.Query().Get("cep")
-		if strings.Count(cep, "")-1 < cepLength {
+		if strings.Count(cep, "")-1 != cepLength {
 			http.Error(w, "invalid zipcode", http.StatusUnprocessableEntity)
 			return
 		}

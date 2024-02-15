@@ -21,14 +21,9 @@ Desenvolver uma API que receba um CEP e retorne a temperatura da localidade do C
 - os.Getenv: para pegar variáveis de ambiente.
 - strings.Count: para saber o tamanho da string.
 
-## Como executar
-#### sem docker
+## Como executar o projeto localmente sem docker
 ```bash
 WEATHER_API_KEY=YOUR_API_KEY go run main.go
-```
-#### com docker
-```bash
-docker compose up -d
 ```
 **Atenção**: O arquivo .env é necessário para o docker-compose e nele deve conter a chave de acesso à API do WeatherApi.
 
@@ -38,6 +33,24 @@ WEATHER_API=YOUR_API_KEY
 ```
 
 **Atenção**: substitua YOUR_API_KEY pela sua chave de acesso à API do WeatherApi.
+
+## Como executar o projeto com ambiente de desenvolvimento localmente
+```bash
+make dev
+```
+ou
+```bash
+docker compose -f docker-compose-dev.yml up -d --build
+```
+
+## Como executar o projeto com ambiente de produção localmente
+```bash
+make prod
+```
+ou
+```bash
+docker compose -f docker-compose-prod.yml up -d --build
+```
 
 ## Endpoints
 ### GET /weather?cep=:cep

@@ -3,6 +3,7 @@ services:
   webserver:
       build:
         context: .
+        dockerfile: Dockerfile.prod
       ports:
         - "8080:8080"
       env_file:

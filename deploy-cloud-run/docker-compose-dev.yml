@@ -1,9 +1,13 @@
 version: '3'
+
 services:
-  webserver:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+  app:
+    image: golang:latest
+    container_name: go_app
+    volumes:
+      - .:/go/src/app
+    working_dir: /go/src/app
+    command: go run main.go
     ports:
       - "8080:8080"
     env_file:

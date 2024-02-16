@@ -40,7 +40,16 @@ make dev
 ```
 ou
 ```bash
-docker compose -f docker-compose-dev.yml up -d --build
+docker compose -f docker-compose-dev.yml up -d
+```
+
+## Como parar o projeto com ambiente de desenvolvimento localmente
+```bash
+make stop-dev
+```
+ou
+```bash
+docker compose -f docker-compose-dev.yml down
 ```
 
 ## Como executar o projeto com ambiente de produção localmente
@@ -50,6 +59,15 @@ make prod
 ou
 ```bash
 docker compose -f docker-compose-prod.yml up -d --build
+```
+
+## Como parar o projeto com ambiente de produção localmente
+```bash
+make stop-prod
+```
+ou
+```bash
+docker compose -f docker-compose-prod.yml down
 ```
 
 ## Endpoints
@@ -78,8 +96,17 @@ curl -X GET "http://localhost:8080/weather?cep=01311000"
 
 ## Testes de integração
 ```bash
-docker compose up -d
+make prod
+make test
+````
+ou
+```bash
+docker compose -f docker-compose-prod.yml up -d --build
 go test -v ./...
+```
+
+Resultado esperado:
+```bash
 === RUN   TestWebServerSuite
 === RUN   TestWebServerSuite/TestCepNotFound
 === RUN   TestWebServerSuite/TestInvalidCepLength

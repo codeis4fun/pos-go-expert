@@ -36,7 +36,7 @@ docker compose stop
 
 ## Endpoints
 ### GET /weather/:cep
-Retorna a temperatura o nome da localidade do CEP e a temperatura em celsius, fahrenheit e kelvin.
+Retorna o nome da localidade do CEP e a temperatura em celsius, fahrenheit e kelvin.
 
 #### Parâmetros
 - cep: string com 8 dígitos.

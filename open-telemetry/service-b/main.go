@@ -62,10 +62,7 @@ func (w *weatherAPI) tempCToK() tempK {
 	return tempK(w.Current.TempC + 273)
 }
 
-func (w *weatherAPI) getWeather(r *http.Request, localidade string) (*weatherAPI, error) {
-	carrier := propagation.HeaderCarrier(r.Header)
-	ctx := r.Context()
-	ctx = otel.GetTextMapPropagator().Extract(ctx, carrier)
+func (w *weatherAPI) getWeather(ctx context.Context, localidade string) (*weatherAPI, error) {
 	ctx, span := w.tracer.Start(ctx, "request-to-service-weatherAPI")
 	defer span.End()
 	url := fmt.Sprintf("https://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=no", w.apiKey, url.QueryEscape(localidade))
@@ -77,7 +74,6 @@ func (w *weatherAPI) getWeather(r *http.Request, localidade string) (*weatherAPI
 
 	req.Header.Set("Accept", "application/json")
 
-	otel.GetTextMapPropagator().Inject(ctx, carrier)
 	resp, err := w.client.Do(req)
 	if err != nil {
 		return nil, err
@@ -121,10 +117,7 @@ type viaCEP struct {
 	tracer     trace.Tracer
 }
 
-func (v *viaCEP) getLocalidade(r *http.Request, cep string) string {
-	carrier := propagation.HeaderCarrier(r.Header)
-	ctx := r.Context()
-	ctx = otel.GetTextMapPropagator().Extract(ctx, carrier)
+func (v *viaCEP) getLocalidade(ctx context.Context, cep string) string {
 	ctx, span := v.tracer.Start(ctx, "request-to-service-viaCEP")
 	defer span.End()
 	url := fmt.Sprintf("https://viacep.com.br/ws/%s/json/", cep)
@@ -135,8 +128,6 @@ func (v *viaCEP) getLocalidade(r *http.Request, cep string) string {
 	}
 
 	req.Header.Set("Accept", "application/json")
-
-	otel.GetTextMapPropagator().Inject(ctx, carrier)
 	resp, err := v.client.Do(req)
 	if err != nil {
 		return ""
@@ -212,8 +203,6 @@ func main() {
 	client := new(http.Client)
 	client.Transport = tr
 
-	defer client.CloseIdleConnections()
-
 	tracer := otel.Tracer("service-b-tracer")
 	viaCEPTracer := otel.Tracer("service-b-viaCEP-tracer")
 	weatherAPITracer := otel.Tracer("service-b-weatherAPI-tracer")
@@ -233,7 +222,6 @@ func main() {
 		ctx := r.Context()
 		ctx = otel.GetTextMapPropagator().Extract(ctx, carrier)
 		ctx, span := tracer.Start(ctx, "request-from-service-b-to-external-services")
-		otel.GetTextMapPropagator().Inject(ctx, carrier)
 		defer span.End()
 		cep := r.URL.Query().Get("cep")
 		if strings.Count(cep, "")-1 != cepLength {
@@ -241,14 +229,14 @@ func main() {
 			return
 		}
 
-		localidade := viaCEP.getLocalidade(r, cep)
+		localidade := viaCEP.getLocalidade(ctx, cep)
 		log.Println("localidade: ", localidade)
 		if localidade == "" {
 			http.Error(w, "can not find zipcode", http.StatusNotFound)
 			return
 		}
 
-		weather, err := weatherAPI.getWeather(r, localidade)
+		weather, err := weatherAPI.getWeather(ctx, localidade)
 		log.Println("weather: ", weather)
 		if err != nil {
 			fmt.Println(err)

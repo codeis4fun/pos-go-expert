@@ -58,13 +58,7 @@ curl -X GET "http://localhost:8090/weather/01311000"
 
 ## Exemplo de visualização no Zipkin
 ### Tracing completo do serviço A para o serviço B
-![Zipkin](./screenshots/zipkin01.png)
-
-### Tracing completo do serviço B para os serviços externos
-![Zipkin](./screenshots/zipkin02.png)
-
-### Tracing do serviço B separado por requsições aos serviços externos (VIACEP e WeatherAPI)
-![Zipkin](./screenshots/zipkin03.png)
+![Zipkin](./screenshots/zipkin.png)
 
 ## Autor
 - [Nícholas Carballo](https://www.linkedin.com/in/nicholascarballo/)

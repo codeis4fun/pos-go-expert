@@ -1,12 +1,14 @@
 version: '3'
 services:
   service-a:
-        build:
-          context: ./service-a
-          dockerfile: Dockerfile
-        ports:
-          - "8090:8090"
+    restart: always
+    build:
+      context: ./service-a
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
   service-b:
+      restart: always
       build:
         context: ./service-b
         dockerfile: Dockerfile
@@ -15,12 +17,13 @@ services:
       env_file:
       - ./service-b/.env
   collector:
+    restart: always
     image: otel/opentelemetry-collector:latest
     command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
       - ./otel-collector.config.yml:/etc/otel-collector-config.yaml
-
   zipkin:
+    restart: always
     image: openzipkin/zipkin:latest
     ports:
       - "9411:9411"

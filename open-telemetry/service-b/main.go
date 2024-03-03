@@ -128,6 +128,7 @@ func (v *viaCEP) getLocalidade(ctx context.Context, cep string) string {
 	}
 
 	req.Header.Set("Accept", "application/json")
+	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(req.Header))
 	resp, err := v.client.Do(req)
 	if err != nil {
 		return ""

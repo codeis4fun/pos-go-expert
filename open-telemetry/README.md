@@ -14,7 +14,7 @@ O desafio consiste em criar uma aplicação utilizando OpenTelemetry para monito
 - [x] A API deve retornar um JSON o nome da cidade e três temperaturas: Celsius, Fahrenheit e Kelvin.
 - [x] Para CEPs inválidos, a API deve retornar o status 422.
 - [x] Para CEPs não encontrados a API deve retornar o status 404.
-```
+
 **Atenção**: O arquivo .env é necessário para o docker-compose e nele deve conter a chave de acesso à API do WeatherApi.
 
 ##### Exemplo de .env

@@ -101,13 +101,14 @@ func main() {
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.Timeout(time.Second * 60))
 
-	tracer := otel.Tracer("service-a-tracer")
-
 	router.Get("/weather/{cep}", func(w http.ResponseWriter, r *http.Request) {
 		carrier := propagation.HeaderCarrier(r.Header)
 		ctx := r.Context()
 		ctx = otel.GetTextMapPropagator().Extract(ctx, carrier)
+
+		tracer := otel.Tracer("service-a-tracer")
 		ctx, span := tracer.Start(ctx, "request-from-service-a-to-service-b")
+
 		defer span.End()
 		cep := chi.URLParam(r, "cep")
 		if len(cep) != cepLength {
@@ -122,7 +123,7 @@ func main() {
 			return
 		}
 
-		otel.GetTextMapPropagator().Inject(ctx, carrier)
+		otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(req.Header))
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
 			http.Error(w, "service b error", http.StatusInternalServerError)

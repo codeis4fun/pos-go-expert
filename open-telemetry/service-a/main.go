@@ -137,6 +137,10 @@ func main() {
 		json.NewDecoder(resp.Body).Decode(&response)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(resp.StatusCode)
+		if resp.StatusCode == http.StatusNotFound {
+			http.Error(w, "can not find zipcode", http.StatusNotFound)
+			return
+		}
 		json.NewEncoder(w).Encode(response)
 	})
 

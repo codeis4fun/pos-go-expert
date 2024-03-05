@@ -19,7 +19,7 @@ O desafio consiste em criar uma aplicação utilizando OpenTelemetry para monito
 
 ##### Exemplo de .env
 ```env
-WEATHER_API=YOUR_API_KEY
+WEATHER_API_KEY=YOUR_API_KEY
 ```
 
 **Atenção**: substitua YOUR_API_KEY pela sua chave de acesso à API do WeatherApi.
